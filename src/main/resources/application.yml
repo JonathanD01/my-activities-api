@@ -1,0 +1,43 @@
+cors:
+  allowed-origins: http://localhost:3000
+  allowed-methods: GET,POST,PATCH,DELETE
+  allowed-headers: "*"
+  exposed-headers: "*"
+
+jwt:
+  secret-key: "eyJhbGciOiJIUzI1NiJ9eyJSb2xlIjoCJVc2VybmFtZfQDc63o7pZD8tFVCI4xK7o2XwZgIRWZusciu1EbKbs"
+  expiration: 86400000
+
+mailing:
+  frontend:
+    activation-url: http://localhost:3000/aktiver-bruker
+
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5431/my-activities
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  mail:
+    host: localhost
+    port: 587
+    username: ""
+    password: ""
+    from-email: hei@my-activities.dk
+
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always

@@ -1,0 +1,52 @@
+quickperf:
+  enabled: true
+
+logging:
+  level:
+    org.hibernate.stat: DEBUG
+    org.hibernate.sql: DEBUG
+    org.springframework.web.reactive.function.client: DEBUG
+    org.springframework.http: TRACE
+
+cors:
+  allowed-origins: "http://localhost:3000"
+  allowed-methods: "GET,POST,PATCH,DELETE"
+  allowed-headers: "*"
+  exposed-headers: "*"
+
+jwt:
+  secret-key: "eyJhbGciOiJIUzI1NiJ9eyJSb2xlIjoCJVc2VybmFtZfQDc63o7pZD8tFVCI4xK7o2XwZgIRWZusciu1EbKbs"
+  expiration: 86400000
+
+mailing:
+  frontend:
+    activation-url: http://localhost:3000/aktiver-bruker
+
+spring:
+  mail:
+    host: localhost
+    port: 587
+    username: ""
+    password: ""
+    from-email: "hei@test.dk"
+  main:
+    allow-bean-definition-overriding: true
+  thymeleaf:
+    prefix: classpath:/templates/
+  threads:
+    virtual:
+      enabled: true
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        generate_statistics: true
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
