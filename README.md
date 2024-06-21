@@ -36,3 +36,4 @@ java -jar target/my-activities.jar
 ## TODO
 - Add comments
 - ~~Add tests~~
+- Schedule emails

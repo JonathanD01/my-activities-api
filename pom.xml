@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>no.jonathan</groupId>
 	<artifactId>my-activities</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<name>my-activities-api</name>
 	<description>See your upcoming activities</description>
 	<properties>

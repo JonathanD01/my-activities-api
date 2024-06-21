@@ -50,23 +50,28 @@ public class ActivityController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    @PatchMapping
+    @PatchMapping("{activityId}")
     public ResponseEntity<Response<ActivityDto>> updateActivity(
+            @PathVariable("activityId") Long activityId,
             @Valid @RequestBody ActivityUpdateRequest updateRequest,
             Authentication authentication
     ) {
-        ActivityDto updatedActivity = activityService.updateActivity(authentication, updateRequest);
+        ActivityDto updatedActivity = activityService.updateActivity(
+                authentication,
+                activityId,
+                updateRequest
+        );
 
         return ResponseEntity.ok(responseUtil.buildSuccessResponse(updatedActivity));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    @DeleteMapping
+    @DeleteMapping("{activityId}")
     public ResponseEntity<Response<Long>> deleteActivity(
-            @RequestParam(name = "id") Long id,
+            @PathVariable("activityId") Long activityId,
             Authentication authentication
     ) {
-        Long deletedActivityId = activityService.deleteActivity(authentication, id);
+        Long deletedActivityId = activityService.deleteActivity(authentication, activityId);
 
         return ResponseEntity.ok(responseUtil.buildSuccessResponse(deletedActivityId));
     }

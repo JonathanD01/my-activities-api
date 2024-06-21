@@ -24,8 +24,11 @@ public class ActivityService {
             Authentication authentication,
             Pageable pageable
     ) {
-        return activityRepository
-                .findByUser_EmailAndDateGreaterThanEqualOrderByDateAsc(authentication.getName(), LocalDate.now(), pageable);
+        return activityRepository.findByUser_EmailAndDateGreaterThanEqualOrderByDateAsc(
+                authentication.getName(),
+                LocalDate.now(),
+                pageable
+        );
     }
 
     public ActivityDto createActivity(Authentication authentication, ActivityCreateRequest createRequest) {
@@ -43,10 +46,12 @@ public class ActivityService {
         return activityDtoMapper.apply(newActivity);
     }
 
-    public ActivityDto updateActivity(Authentication authentication, ActivityUpdateRequest updateRequest) {
+    public ActivityDto updateActivity(
+            Authentication authentication,
+            Long activityId,
+            ActivityUpdateRequest updateRequest
+    ) {
         User user = ((User) authentication.getPrincipal());
-
-        Long activityId = updateRequest.id();
 
         Activity activityToUpdate = activityRepository.findById(activityId)
                 .orElseThrow(() -> new ActivityNotFoundException(activityId));

@@ -134,12 +134,12 @@ class ActivityServiceTest {
         var mockAuthentication = mock(Authentication.class);
 
         var updateRequest = new ActivityUpdateRequest(
-                faker.random().nextLong(),
                 LocalDate.now().plusYears(faker.random().nextInt(5, 10)),
                 faker.lorem().sentence(),
                 faker.lorem().characters(100, 200));
 
         var activity = Activity.builder()
+                .id(faker.random().nextLong())
                 .date(updateRequest.date())
                 .title(updateRequest.title())
                 .description(updateRequest.description())
@@ -149,14 +149,14 @@ class ActivityServiceTest {
         // When
         when(mockAuthentication.getPrincipal()).thenReturn(user);
 
-        when(activityRepository.findById(updateRequest.id())).thenReturn(Optional.of(activity));
+        when(activityRepository.findById(activity.getId())).thenReturn(Optional.of(activity));
 
         when(activityRepository.save(any())).thenReturn(activity);
 
         when(activityDtoMapper.apply(any())).thenReturn(_activityDtoMapper.apply(activity));
 
         // Then
-        ActivityDto result = underTest.updateActivity(mockAuthentication, updateRequest);
+        ActivityDto result = underTest.updateActivity(mockAuthentication, activity.getId(), updateRequest);
 
         assertThat(result.date()).isEqualTo(updateRequest.date());
         assertThat(result.title()).isEqualTo(updateRequest.title());
@@ -169,8 +169,9 @@ class ActivityServiceTest {
         // Given
         var mockAuthentication = mock(Authentication.class);
 
+        var activityId = faker.random().nextLong();
+
         var updateRequest = new ActivityUpdateRequest(
-                faker.random().nextLong(),
                 LocalDate.now().plusYears(faker.random().nextInt(5, 10)),
                 faker.lorem().sentence(),
                 faker.lorem().characters(100, 200));
@@ -178,12 +179,12 @@ class ActivityServiceTest {
         // When
         when(mockAuthentication.getPrincipal()).thenReturn(user);
 
-        when(activityRepository.findById(updateRequest.id())).thenReturn(Optional.empty());
+        when(activityRepository.findById(activityId)).thenReturn(Optional.empty());
 
         // Then
-        assertThatThrownBy(() -> underTest.updateActivity(mockAuthentication, updateRequest))
+        assertThatThrownBy(() -> underTest.updateActivity(mockAuthentication, activityId, updateRequest))
                 .isInstanceOf(ActivityNotFoundException.class)
-                .hasMessage("Activity with id '" + updateRequest.id() + "' was not found");
+                .hasMessage("Activity with id '" + activityId + "' was not found");
     }
 
     @Test
@@ -192,8 +193,9 @@ class ActivityServiceTest {
         // Given
         var mockAuthentication = mock(Authentication.class);
 
+        var activityId = faker.random().nextLong();
+
         var updateRequest = new ActivityUpdateRequest(
-                faker.random().nextLong(),
                 LocalDate.now().plusYears(faker.random().nextInt(5, 10)),
                 faker.lorem().sentence(),
                 faker.lorem().characters(100, 200));
@@ -208,10 +210,10 @@ class ActivityServiceTest {
         // When
         when(mockAuthentication.getPrincipal()).thenReturn(user);
 
-        when(activityRepository.findById(updateRequest.id())).thenReturn(Optional.of(activity));
+        when(activityRepository.findById(activityId)).thenReturn(Optional.of(activity));
 
         // Then
-        assertThatThrownBy(() -> underTest.updateActivity(mockAuthentication, updateRequest))
+        assertThatThrownBy(() -> underTest.updateActivity(mockAuthentication, activityId, updateRequest))
                 .isInstanceOf(ActivityNoPermissionException.class)
                 .hasMessage("No permission");
     }
@@ -222,8 +224,9 @@ class ActivityServiceTest {
         // Given
         var mockAuthentication = mock(Authentication.class);
 
+        var activityId = faker.random().nextLong();
+
         var updateRequest = new ActivityUpdateRequest(
-                faker.random().nextLong(),
                 LocalDate.now().plusYears(faker.random().nextInt(5, 10)),
                 faker.lorem().sentence(),
                 faker.lorem().characters(100, 200));
@@ -238,14 +241,14 @@ class ActivityServiceTest {
         // When
         when(mockAuthentication.getPrincipal()).thenReturn(adminUser);
 
-        when(activityRepository.findById(updateRequest.id())).thenReturn(Optional.of(activity));
+        when(activityRepository.findById(activityId)).thenReturn(Optional.of(activity));
 
         when(activityRepository.save(any())).thenReturn(activity);
 
         when(activityDtoMapper.apply(any())).thenReturn(_activityDtoMapper.apply(activity));
 
         // Then
-        ActivityDto result = underTest.updateActivity(mockAuthentication, updateRequest);
+        ActivityDto result = underTest.updateActivity(mockAuthentication, activityId, updateRequest);
 
         assertThat(result.date()).isEqualTo(updateRequest.date());
         assertThat(result.title()).isEqualTo(updateRequest.title());

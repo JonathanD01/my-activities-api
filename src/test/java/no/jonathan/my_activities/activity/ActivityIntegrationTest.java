@@ -257,8 +257,9 @@ class ActivityIntegrationTest {
         // Given
         var jwtToken = jwtService.generateTokenFromUsernameOnly(userWithUserRole);
 
+        var activityId = 400L;
+
         var updateRequest = new ActivityUpdateRequest(
-                400L,
                 LocalDate.now().plusYears(faker.random().nextInt(5, 10)),
                 faker.lorem().sentence(),
                 faker.lorem().characters(100, 200));
@@ -266,7 +267,7 @@ class ActivityIntegrationTest {
         // When
         // Then
         webTestClient.patch()
-                .uri("/api/v1/activities")
+                .uri("/api/v1/activities/{activityId}", activityId)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(updateRequest), ActivityUpdateRequest.class)
                 .header("Authorization", String.format("Bearer %s", jwtToken))
@@ -274,7 +275,7 @@ class ActivityIntegrationTest {
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$.response").isEqualTo(ResponseType.SUCCESS.name())
-                .jsonPath("$.result.id").isEqualTo(updateRequest.id())
+                .jsonPath("$.result.id").isEqualTo(activityId)
                 .jsonPath("$.result.date").isEqualTo(LocalDateFormatter.format(updateRequest.date()))
                 .jsonPath("$.result.title").isEqualTo(updateRequest.title())
                 .jsonPath("$.result.description").isEqualTo(updateRequest.description());
@@ -288,8 +289,9 @@ class ActivityIntegrationTest {
         // Given
         var jwtToken = jwtService.generateTokenFromUsernameOnly(userWithAdminRole);
 
+        var activityId = 800L;
+
         var updateRequest = new ActivityUpdateRequest(
-                800L,
                 LocalDate.now().plusYears(faker.random().nextInt(5, 10)),
                 faker.lorem().sentence(),
                 faker.lorem().characters(100, 200));
@@ -297,7 +299,7 @@ class ActivityIntegrationTest {
         // When
         // Then
         webTestClient.patch()
-                .uri("/api/v1/activities")
+                .uri("/api/v1/activities/{activityId}", activityId)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(updateRequest), ActivityUpdateRequest.class)
                 .header("Authorization", String.format("Bearer %s", jwtToken))
@@ -305,7 +307,7 @@ class ActivityIntegrationTest {
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$.response").isEqualTo(ResponseType.SUCCESS.name())
-                .jsonPath("$.result.id").isEqualTo(updateRequest.id())
+                .jsonPath("$.result.id").isEqualTo(activityId)
                 .jsonPath("$.result.date").isEqualTo(LocalDateFormatter.format(updateRequest.date()))
                 .jsonPath("$.result.title").isEqualTo(updateRequest.title())
                 .jsonPath("$.result.description").isEqualTo(updateRequest.description());
@@ -318,8 +320,9 @@ class ActivityIntegrationTest {
         // Given
         var jwtToken = jwtService.generateTokenFromUsernameOnly(userWithUserRole);
 
+        var activityId = 800L;
+
         var updateRequest = new ActivityUpdateRequest(
-                800L,
                 LocalDate.now().plusYears(faker.random().nextInt(5, 10)),
                 faker.lorem().sentence(),
                 faker.lorem().characters(100, 200));
@@ -327,7 +330,7 @@ class ActivityIntegrationTest {
         // When
         // Then
         webTestClient.patch()
-                .uri("/api/v1/activities")
+                .uri("/api/v1/activities/{activityId}", activityId)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(updateRequest), ActivityUpdateRequest.class)
                 .header("Authorization", String.format("Bearer %s", jwtToken))
@@ -348,8 +351,9 @@ class ActivityIntegrationTest {
         // Given
         var jwtToken = jwtService.generateTokenFromUsernameOnly(userWithAdminRole);
 
+        var activityId = 300L;
+
         var updateRequest = new ActivityUpdateRequest(
-                300L,
                 LocalDate.now().plusYears(faker.random().nextInt(5, 10)),
                 faker.lorem().sentence(),
                 faker.lorem().characters(100, 200));
@@ -357,7 +361,7 @@ class ActivityIntegrationTest {
         // When
         // Then
         webTestClient.patch()
-                .uri("/api/v1/activities")
+                .uri("/api/v1/activities/{activityId}", activityId)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(updateRequest), ActivityUpdateRequest.class)
                 .header("Authorization", String.format("Bearer %s", jwtToken))
@@ -365,7 +369,7 @@ class ActivityIntegrationTest {
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$.response").isEqualTo(ResponseType.SUCCESS.name())
-                .jsonPath("$.result.id").isEqualTo(updateRequest.id())
+                .jsonPath("$.result.id").isEqualTo(activityId)
                 .jsonPath("$.result.date").isEqualTo(LocalDateFormatter.format(updateRequest.date()))
                 .jsonPath("$.result.title").isEqualTo(updateRequest.title())
                 .jsonPath("$.result.description").isEqualTo(updateRequest.description());
@@ -378,8 +382,9 @@ class ActivityIntegrationTest {
         // Given
         var jwtToken = jwtService.generateTokenFromUsernameOnly(userWithNoneRole);
 
+        var activityId = 500L;
+
         var updateRequest = new ActivityUpdateRequest(
-                500L,
                 LocalDate.now().plusYears(faker.random().nextInt(5, 10)),
                 faker.lorem().sentence(),
                 faker.lorem().characters(100, 200));
@@ -387,7 +392,7 @@ class ActivityIntegrationTest {
         // When
         // Then
         webTestClient.patch()
-                .uri("/api/v1/activities")
+                .uri("/api/v1/activities/{activityId}", activityId)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(updateRequest), ActivityUpdateRequest.class)
                 .header("Authorization", String.format("Bearer %s", jwtToken))
@@ -401,8 +406,9 @@ class ActivityIntegrationTest {
     @DisplayName("It should not update activity if jwtToken is invalid")
     void itShouldNotUpdateActivityIfTokenIsInvalid() {
         // Given
+        var activityId = 200L;
+
         var createRequest = new ActivityUpdateRequest(
-                200L,
                 LocalDate.now().plusYears(faker.random().nextInt(5, 10)),
                 faker.lorem().sentence(),
                 faker.lorem().characters(100, 200));
@@ -410,7 +416,7 @@ class ActivityIntegrationTest {
         // When
         // Then
         webTestClient.patch()
-                .uri("/api/v1/activities")
+                .uri("/api/v1/activities/{activityId}", activityId)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(createRequest), ActivityUpdateRequest.class)
                 .header("Authorization", String.format("Bearer %s", invalidJwtToken))
@@ -432,7 +438,7 @@ class ActivityIntegrationTest {
         // When
         // Then
         webTestClient.delete()
-                .uri("/api/v1/activities?id={id}", activityIdToDelete)
+                .uri("/api/v1/activities/{activityId}", activityIdToDelete)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization", String.format("Bearer %s", jwtToken))
                 .exchange()
@@ -454,7 +460,7 @@ class ActivityIntegrationTest {
         // When
         // Then
         webTestClient.delete()
-                .uri("/api/v1/activities?id={id}", activityIdToDelete)
+                .uri("/api/v1/activities/{activityId}", activityIdToDelete)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization", String.format("Bearer %s", jwtToken))
                 .exchange()
@@ -475,7 +481,7 @@ class ActivityIntegrationTest {
         // When
         // Then
         webTestClient.delete()
-                .uri("/api/v1/activities?id={id}", activityIdToDelete)
+                .uri("/api/v1/activities/{activityId}", activityIdToDelete)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization", String.format("Bearer %s", jwtToken))
                 .exchange()
@@ -499,7 +505,7 @@ class ActivityIntegrationTest {
         // When
         // Then
         webTestClient.delete()
-                .uri("/api/v1/activities?id={id}", activityIdToDelete)
+                .uri("/api/v1/activities/{activityId}", activityIdToDelete)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization", String.format("Bearer %s", jwtToken))
                 .exchange()
@@ -518,7 +524,7 @@ class ActivityIntegrationTest {
         // When
         // Then
         webTestClient.delete()
-                .uri("/api/v1/activities?id={id}", activityIdToDelete)
+                .uri("/api/v1/activities/{activityId}", activityIdToDelete)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization", String.format("Bearer %s", invalidJwtToken))
                 .exchange()
